@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Spring Boot Project</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .jumbotron-sm {
+            background-image: linear-gradient(to right, #4682b4, #87cefa);
+            color: #fff;
+            padding: 50px 0;
+            /* Adjust padding to fit the smaller size */
+        }
+
+        .btn-outline-custom {
+            color: #4682b4;
+            border-color: #4682b4;
+        }
+
+        .btn-outline-custom:hover {
+            color: #fff;
+            background-color: #4682b4;
+            border-color: #4682b4;
+        }
+
+        .message-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .alert {
+            background-color: #f8d7da;
+            color: #721c24;
+            border-color: #f5c6cb;
+        }
+
+        .table-bordered {
+            border-color: #4682b4;
+        }
+
+        .table-bordered th,
+        .table-bordered td {
+            border-color: #4682b4;
+        }
+
+        /* Styles for the sliding check button */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        input:checked+.slider {
+            background-color: #2196F3;
+        }
+
+        input:checked+.slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+
+        /* Style for warning */
+        /* .warning td {
+            background-color: #f8d7da !important;
+        } */
+        /* Style for grey */
+        .grey td {
+            background-color: #d1cfcf !important;
+            /* Adjust the shade of grey as needed */
+        }
+    </style>
+    <style>
+        .jumbotron-sm {
+            background-color: #f8f9fa;
+            padding: 50px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .display-4 {
+            font-size: 2.5rem;
+            color: #380611;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="jumbotron-sm text-center">
+        <h1 class="display-4"><strong>Welcome to Mustafvi Inc</strong></h1>
+    </div>
+    <div class="container mt-5 width: 25%">
+
+        <div class="mt-5 text-center" th:if="${session.msg}">
+            <p th:text="${session.msg}" class="fs-3 text-success "></p>
+
+            <th:block th:text="${@employeeServiceImpl.removeSessionsmg()}"></th:block>
+        </div>
+        <div class="mt-5 text-center" th:if="${session.deleteMsg}">
+            <p th:text="${session.deleteMsg}" class="fs-3 text-danger"></p>
+
+            <th:block th:text="${@employeeServiceImpl.removeSessionDeletedMsg()}"></th:block>
+        </div>
+        <a th:href="@{/}" class="btn btn-outline-secondary btn-lg py-3 px-5">Add Employee</a>
+
+
+
+
+        <div class="mt-5 text-center">
+            <h1 class="h2 font-weight-bold text-dark">List Of All Employees</h1>
+        </div>
+
+
+        <div class="">
+
+            <div class="table-responsive text-center">
+                <table class="table table-bordered table-hover mt-3">
+                    <thead class="table-primary">
+                        <tr>
+
+                            <th scope="col">First Name</th>
+                            <th scope="col">Last Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Phone</th>
+                            <th scope="col">Attendance</th>
+                            <th scope="col">Actions</th>
+
+                        </tr>
+                    </thead>
+
+
+                    <tbody>
+                        <tr th:each="tempEmployee:${employees}" class="employee-row">
+                            <td th:text="${tempEmployee.firstName}"></td>
+                            <td th:text="${tempEmployee.lastName}"></td>
+                            <td th:text="${tempEmployee.email}"></td>
+                            <td th:text="${'+91' + ' ' + tempEmployee.phonenumber}"></td>
+                            <td style="text-align: center">
+                                <label class="switch" style="display: inline-block;">
+                                    <input type="checkbox" class="highlight-check" style="display: none;">
+                                    <span class="slider"></span>
+                                </label>
+                            </td>
+                            <td>
+                                <a th:href="@{'/update/' + ${tempEmployee.empid}}" class="btn btn-primary btn-sm me-2">
+                                    <i class="fas fa-edit"></i> Update</a>
+
+                                <a th:href="@{'/delete/' + ${tempEmployee.empid}}" class="btn btn-danger btn-sm"
+                                    onclick="confirmDelete('${tempEmployee.empid}')">
+                                    <i class="fas fa-trash-alt"></i> Delete</a>
+
+                            </td>
+
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"
+            crossorigin="anonymous"></script>
+
+
+        <script>
+            // Add event listeners to all checkboxes with class 'highlight-check'
+            const checkboxes = document.querySelectorAll('.highlight-check');
+
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function () {
+                    const row = this.closest('tr'); // Get the closest row
+                    if (this.checked) {
+                        row.classList.add('grey'); // Add 'warning' class to the row
+                    } else {
+                        row.classList.remove('grey'); // Remove 'warning' class from the row
+                    }
+                });
+            });
+
+            function confirmDelete(employeeId) {
+                if (confirm("Are you sure you want to delete this employee?")) {
+                    window.location.href = '/delete/' + employeeId;
+                }
+            }
+        </script>
+
+
+    </div>
+
+
+</body>
+
+</html>

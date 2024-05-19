@@ -1,0 +1,12 @@
+.custom-table {
+    width: 400px;
+
+    /* Adjust the width as per your requirement */
+    .message-container {
+        max-width: 500px;
+        /* Adjust this value as needed */
+        margin: 0 auto;
+        /* Center the container */
+    }
+
+}
